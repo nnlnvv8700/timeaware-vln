@@ -1,0 +1,5 @@
+model,budget_steps,split,episodes,avg_completed_subtasks,avg_total_subtasks,completion_rate
+GOAT-SenseAct-NN,100,val_unseen,100,0.5400,7.4900,0.0721
+GOAT-SenseAct-NN,200,val_unseen,100,0.8800,7.4900,0.1175
+GOAT-SenseAct-NN,300,val_unseen,100,0.9100,7.4900,0.1215
+GOAT-SenseAct-NN,500,val_unseen,100,1.1200,7.4900,0.1495

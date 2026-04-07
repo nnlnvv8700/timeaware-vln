@@ -1,0 +1,14 @@
+.cache/
+__pycache__/
+*.py[cod]
+
+# Local data, model weights, and generated caches are too large for GitHub.
+data/
+docker/wheels/
+vln_external/
+
+# Local editor and OS files.
+.DS_Store
+.idea/
+.vscode/
+

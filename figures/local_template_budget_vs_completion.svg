@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720">
+<defs>
+<linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#F6F1E9"/>
+<stop offset="100%" stop-color="#E8F0E8"/>
+</linearGradient>
+</defs>
+<rect width="100%" height="100%" fill="url(#bg)"/>
+<text x="90" y="36" font-size="28" font-family="Arial, Helvetica, sans-serif" fill="#162521">Completed Subtasks vs Time-Step Budget</text>
+<text x="90" y="58" font-size="14" font-family="Arial, Helvetica, sans-serif" fill="#445A54">Mock example for GOAT-Bench language-only, val_unseen</text>
+<rect x="90" y="70" width="770" height="560" rx="18" fill="#FFFDF8" stroke="#D9D2C3"/>
+<line x1="475.0" y1="630" x2="475.0" y2="70" stroke="#ECE7DB" stroke-width="1"/>
+<text x="475.0" y="658" text-anchor="middle" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">100</text>
+<line x1="90" y1="610.0" x2="860" y2="610.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="614.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">0</text>
+<line x1="90" y1="506.0" x2="860" y2="506.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="510.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">1</text>
+<line x1="90" y1="402.0" x2="860" y2="402.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="406.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">2</text>
+<line x1="90" y1="298.0" x2="860" y2="298.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="302.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">3</text>
+<line x1="90" y1="194.0" x2="860" y2="194.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="198.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">4</text>
+<line x1="90" y1="90.0" x2="860" y2="90.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="94.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">5</text>
+<text x="475.0" y="692" text-anchor="middle" font-size="15" font-family="Arial, Helvetica, sans-serif" fill="#162521">Budget per subtask (steps)</text>
+<text x="24" y="350.0" transform="rotate(-90, 24, 350.0)" text-anchor="middle" font-size="15" font-family="Arial, Helvetica, sans-serif" fill="#162521">Average completed subtasks</text>
+<polyline points="475.0,402.0" fill="none" stroke="#0B6E4F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="475.0" cy="402.0" r="5.5" fill="#0B6E4F" stroke="#FFFDF8" stroke-width="2"/>
+<line x1="890" y1="90" x2="924" y2="90" stroke="#0B6E4F" stroke-width="5" stroke-linecap="round"/>
+<text x="936" y="95" font-size="16" font-family="Arial, Helvetica, sans-serif" fill="#162521">IVLN-CE</text>
+<text x="936" y="117" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">AUC=0.0</text>
+<text x="936" y="137" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Last point: 2.00 tasks @ 100</text>
+<text x="936" y="157" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Completion rate: 28.6%</text>
+<polyline points="475.0,402.0" fill="none" stroke="#C84C09" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="475.0" cy="402.0" r="5.5" fill="#C84C09" stroke="#FFFDF8" stroke-width="2"/>
+<line x1="890" y1="172" x2="924" y2="172" stroke="#C84C09" stroke-width="5" stroke-linecap="round"/>
+<text x="936" y="177" font-size="16" font-family="Arial, Helvetica, sans-serif" fill="#162521">NaVid</text>
+<text x="936" y="199" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">AUC=0.0</text>
+<text x="936" y="219" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Last point: 2.00 tasks @ 100</text>
+<text x="936" y="239" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Completion rate: 28.6%</text>
+<polyline points="475.0,298.0" fill="none" stroke="#1F4E79" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="475.0" cy="298.0" r="5.5" fill="#1F4E79" stroke="#FFFDF8" stroke-width="2"/>
+<line x1="890" y1="254" x2="924" y2="254" stroke="#1F4E79" stroke-width="5" stroke-linecap="round"/>
+<text x="936" y="259" font-size="16" font-family="Arial, Helvetica, sans-serif" fill="#162521">Uni-NaVid</text>
+<text x="936" y="281" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">AUC=0.0</text>
+<text x="936" y="301" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Last point: 3.00 tasks @ 100</text>
+<text x="936" y="321" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Completion rate: 42.9%</text>
+<polyline points="475.0,454.0" fill="none" stroke="#9A031E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="475.0" cy="454.0" r="5.5" fill="#9A031E" stroke="#FFFDF8" stroke-width="2"/>
+<line x1="890" y1="336" x2="924" y2="336" stroke="#9A031E" stroke-width="5" stroke-linecap="round"/>
+<text x="936" y="341" font-size="16" font-family="Arial, Helvetica, sans-serif" fill="#162521">VLN-CE-CMA</text>
+<text x="936" y="363" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">AUC=0.0</text>
+<text x="936" y="383" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Last point: 1.50 tasks @ 100</text>
+<text x="936" y="403" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Completion rate: 23.1%</text>
+</svg>

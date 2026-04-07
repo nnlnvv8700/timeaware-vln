@@ -1,0 +1,49 @@
+benchmark_name: goat_lang_time_budget
+env:
+  name: GOAT-Bench
+  variant: language_only
+  split: val_unseen
+  scene_dataset: HM3D
+  success_radius_m: 1.0
+  stop_action_required: true
+
+task:
+  episode_subtasks_min: 5
+  episode_subtasks_max: 10
+  max_steps_per_subtask_candidates:
+    - 100
+    - 200
+    - 300
+    - 500
+
+models:
+  - name: vlnce_cma
+    family: classical_vln
+    notes: classical Habitat baseline
+  - name: ivlnce
+    family: memory_vln
+    notes: persistent-environment baseline
+  - name: navid
+    family: vlm_policy
+    notes: video-based VLM baseline
+  - name: uninavid
+    family: strong_vlm_policy
+    notes: strongest open baseline in shortlist
+
+metrics:
+  primary:
+    - avg_completed_subtasks
+  secondary:
+    - completion_rate
+    - budget_auc
+    - avg_steps_per_completed_subtask
+
+result_schema:
+  required_columns:
+    - model
+    - budget_steps
+    - split
+    - episodes
+    - avg_completed_subtasks
+    - avg_total_subtasks
+    - completion_rate

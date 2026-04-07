@@ -1,0 +1,6 @@
+model,budget_steps,split,episode_id,completed_subtasks,total_subtasks
+VLN-CE-CMA,100,val_unseen,ep_0001,1,7
+VLN-CE-CMA,100,val_unseen,ep_0002,2,6
+IVLN-CE,100,val_unseen,ep_0001,2,7
+NaVid,100,val_unseen,ep_0001,2,7
+Uni-NaVid,100,val_unseen,ep_0001,3,7

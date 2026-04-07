@@ -1,0 +1,12 @@
+.cache/
+data/
+figures/
+results/
+docker/wheels/*.parts/
+vln_external/**
+!vln_external/VLN-CE/
+vln_external/VLN-CE/**
+!vln_external/VLN-CE/requirements.txt
+!vln_external/IVLN-CE/
+vln_external/IVLN-CE/**
+!vln_external/IVLN-CE/requirements.txt

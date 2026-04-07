@@ -1,0 +1,121 @@
+diff --git a/config/tasks/goat_stretch_hm3d.yaml b/config/tasks/goat_stretch_hm3d.yaml
+index 7a17661..b371b9e 100644
+--- a/config/tasks/goat_stretch_hm3d.yaml
++++ b/config/tasks/goat_stretch_hm3d.yaml
+@@ -80,4 +80,4 @@ habitat:
+   dataset:
+     type: Goat-v1
+     split: train
+-    data_path: data/datasets/goat_bench/v1/{split}/{split}.json.gz
++    data_path: data/datasets/goat_bench/hm3d/v1/{split}/{split}.json.gz
+diff --git a/goat_bench/models/encoders/__init__.py b/goat_bench/models/encoders/__init__.py
+index 3883703..66e91b4 100644
+--- a/goat_bench/models/encoders/__init__.py
++++ b/goat_bench/models/encoders/__init__.py
+@@ -1 +1,11 @@
+-from goat_bench.models.encoders import base, blip2, vc1
++from goat_bench.models.encoders import base
++
++try:
++    from goat_bench.models.encoders import blip2
++except ImportError:
++    blip2 = None
++
++try:
++    from goat_bench.models.encoders import vc1
++except ImportError:
++    vc1 = None
+diff --git a/goat_bench/run.py b/goat_bench/run.py
+index 2dea2ee..e86eb17 100644
+--- a/goat_bench/run.py
++++ b/goat_bench/run.py
+@@ -99,6 +99,8 @@ def main():
+ 
+     # print(OmegaConf.to_yaml(config))
+     execute_exp(config, args.run_type)
++    if args.run_type == "eval":
++        os._exit(0)
+ 
+ 
+ def merge_config(config, opts):
+diff --git a/goat_bench/trainers/ppo_trainer_no_2d.py b/goat_bench/trainers/ppo_trainer_no_2d.py
+index f42b64a..6bfcb46 100644
+--- a/goat_bench/trainers/ppo_trainer_no_2d.py
++++ b/goat_bench/trainers/ppo_trainer_no_2d.py
+@@ -9,6 +9,7 @@ import tqdm
+ from habitat import logger
+ from habitat.config import read_write
+ from habitat.config.default import get_agent_config
++from habitat.core.vector_env import CLOSE_COMMAND
+ from habitat.tasks.rearrange.rearrange_sensors import GfxReplayMeasure
+ from habitat.tasks.rearrange.utils import write_gfx_replay
+ from habitat.utils.render_wrapper import overlay_frame
+@@ -34,6 +35,43 @@ if TYPE_CHECKING:
+ @baseline_registry.register_trainer(name="goat_ddppo")
+ @baseline_registry.register_trainer(name="goat_ppo")
+ class GoatPPOTrainer(PPOTrainer):
++    @staticmethod
++    def _safe_close_envs(envs) -> None:
++        if envs is None or getattr(envs, "_is_closed", True):
++            return
++
++        for read_fn in getattr(envs, "_connection_read_fns", []):
++            try:
++                if getattr(read_fn, "is_waiting", False):
++                    read_fn()
++            except Exception as err:
++                logger.warning(f"Ignoring VectorEnv read during close: {err}")
++
++        for write_fn in getattr(envs, "_connection_write_fns", []):
++            try:
++                write_fn((CLOSE_COMMAND, None))
++            except Exception as err:
++                logger.warning(f"Ignoring VectorEnv close command failure: {err}")
++
++        for _, _, write_fn, _ in getattr(envs, "_paused", []):
++            try:
++                write_fn((CLOSE_COMMAND, None))
++            except Exception as err:
++                logger.warning(f"Ignoring paused VectorEnv close failure: {err}")
++
++        for process in list(getattr(envs, "_workers", [])) + [
++            p for _, _, _, p in getattr(envs, "_paused", [])
++        ]:
++            process.join(timeout=5)
++            if process.is_alive():
++                logger.warning(
++                    f"VectorEnv worker {process.pid} did not exit; terminating."
++                )
++                process.terminate()
++                process.join(timeout=1)
++
++        envs._is_closed = True
++
+     def _eval_checkpoint(
+         self,
+         checkpoint_path: str,
+@@ -350,16 +388,14 @@ class GoatPPOTrainer(PPOTrainer):
+                     episode_state_copy["episode_id"] = current_episodes_info[
+                         i
+                     ].episode_id
+-                    episode_state_copy["subtasks"] = current_episodes_info[
+-                        i
+-                    ].tasks
++                    episode_tasks = getattr(current_episodes_info[i], "tasks", [])
++                    episode_state_copy["subtasks"] = episode_tasks
+                     episode_state_copy["success_by_subtask"] = infos[i][
+                         "success.subtask_success"
+                     ]
+                     episode_state_copy["spl_by_subtaskl"] = infos[i][
+                         "spl.spl_by_subtask"
+                     ]
+-                    print("episode_state_copy", current_episodes_info[i].tasks)
+                     episode_state_copy["actions"] = saved_actions[i]
+                     episode_metrics.append(episode_state_copy)
+ 
+@@ -441,4 +477,4 @@ class GoatPPOTrainer(PPOTrainer):
+             ),
+         )
+ 
+-        self.envs.close()
++        self._safe_close_envs(self.envs)

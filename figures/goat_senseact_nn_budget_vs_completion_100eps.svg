@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720">
+<defs>
+<linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#F6F1E9"/>
+<stop offset="100%" stop-color="#E8F0E8"/>
+</linearGradient>
+</defs>
+<rect width="100%" height="100%" fill="url(#bg)"/>
+<text x="90" y="36" font-size="28" font-family="Arial, Helvetica, sans-serif" fill="#162521">Completed Subtasks vs Time-Step Budget</text>
+<text x="90" y="58" font-size="14" font-family="Arial, Helvetica, sans-serif" fill="#445A54">GOAT-Bench val_unseen smoke evaluation</text>
+<rect x="90" y="70" width="770" height="560" rx="18" fill="#FFFDF8" stroke="#D9D2C3"/>
+<line x1="120.0" y1="630" x2="120.0" y2="70" stroke="#ECE7DB" stroke-width="1"/>
+<text x="120.0" y="658" text-anchor="middle" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">100</text>
+<line x1="297.5" y1="630" x2="297.5" y2="70" stroke="#ECE7DB" stroke-width="1"/>
+<text x="297.5" y="658" text-anchor="middle" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">200</text>
+<line x1="475.0" y1="630" x2="475.0" y2="70" stroke="#ECE7DB" stroke-width="1"/>
+<text x="475.0" y="658" text-anchor="middle" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">300</text>
+<line x1="830.0" y1="630" x2="830.0" y2="70" stroke="#ECE7DB" stroke-width="1"/>
+<text x="830.0" y="658" text-anchor="middle" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">500</text>
+<line x1="90" y1="610.0" x2="860" y2="610.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="614.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">0</text>
+<line x1="90" y1="506.0" x2="860" y2="506.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="510.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">1</text>
+<line x1="90" y1="402.0" x2="860" y2="402.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="406.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">2</text>
+<line x1="90" y1="298.0" x2="860" y2="298.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="302.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">3</text>
+<line x1="90" y1="194.0" x2="860" y2="194.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="198.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">4</text>
+<line x1="90" y1="90.0" x2="860" y2="90.0" stroke="#ECE7DB" stroke-width="1"/>
+<text x="72" y="94.0" text-anchor="end" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#37433F">5</text>
+<text x="475.0" y="692" text-anchor="middle" font-size="15" font-family="Arial, Helvetica, sans-serif" fill="#162521">Budget per subtask (steps)</text>
+<text x="24" y="350.0" transform="rotate(-90, 24, 350.0)" text-anchor="middle" font-size="15" font-family="Arial, Helvetica, sans-serif" fill="#162521">Average completed subtasks</text>
+<polyline points="120.0,553.8 297.5,518.5 475.0,515.4 830.0,493.5" fill="none" stroke="#0B6E4F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="120.0" cy="553.8" r="5.5" fill="#0B6E4F" stroke="#FFFDF8" stroke-width="2"/>
+<circle cx="297.5" cy="518.5" r="5.5" fill="#0B6E4F" stroke="#FFFDF8" stroke-width="2"/>
+<circle cx="475.0" cy="515.4" r="5.5" fill="#0B6E4F" stroke="#FFFDF8" stroke-width="2"/>
+<circle cx="830.0" cy="493.5" r="5.5" fill="#0B6E4F" stroke="#FFFDF8" stroke-width="2"/>
+<line x1="890" y1="90" x2="924" y2="90" stroke="#0B6E4F" stroke-width="5" stroke-linecap="round"/>
+<text x="936" y="95" font-size="16" font-family="Arial, Helvetica, sans-serif" fill="#162521">GOAT-SenseAct-NN</text>
+<text x="936" y="117" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">AUC=363.5</text>
+<text x="936" y="137" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Last point: 1.12 tasks @ 500</text>
+<text x="936" y="157" font-size="13" font-family="Arial, Helvetica, sans-serif" fill="#51655E">Completion rate: 14.9%</text>
+</svg>
