@@ -137,6 +137,9 @@ TEST_EPISODE_COUNT=360 BUDGETS="100 200 300 500" ./scripts/run_goat_budget_sweep
 - `scripts/docker_build_vlnce.sh`
 - `scripts/docker_run_vlnce.sh`
 - `scripts/check_native_baselines_data.sh`
+- `scripts/install_mp3d_scenes.sh`
+- `scripts/run_vlnce_cma_smoke_eval.sh`
+- `scripts/run_ivlnce_mapcma_smoke_eval.sh`
 - `scripts/prefetch_vlnce_wheels.sh`
 - `scripts/download_file_segments.py`
 
@@ -204,13 +207,45 @@ VLNCE_WHEEL_SOURCE=official CONNECTIONS=8 ./scripts/prefetch_vlnce_wheels.sh
 - `vln_external/VLN-CE/data/scene_datasets/mp3d/`
 - `vln_external/IVLN-CE/data/scene_datasets/mp3d/`
 
+MP3D 的阻塞点不是仓库代码，而是 `Matterport3D` 官方授权:
+
+- 需要先到 Matterport 官方页面按条款申请访问权限
+- 拿到官方 `download_mp.py` 后，用 `python2.7` 下载 `--task habitat`
+- 本仓库已经补了 `scripts/install_mp3d_scenes.sh`，可以把这一步变成统一缓存 + 双项目链接
+
+如果你已经有现成的 MP3D 目录:
+
+```bash
+./scripts/install_mp3d_scenes.sh --source /path/to/mp3d
+```
+
+如果你拿到了官方 `download_mp.py`:
+
+```bash
+./scripts/install_mp3d_scenes.sh --download-script /path/to/download_mp.py
+```
+
+默认会把共享场景放到:
+
+- `data/scene_datasets/mp3d/`
+
+然后把下面两个路径做成符号链接:
+
+- `vln_external/VLN-CE/data/scene_datasets/mp3d`
+- `vln_external/IVLN-CE/data/scene_datasets/mp3d`
+
 用下面命令检查数据是否补齐:
 
 ```bash
 ./scripts/check_native_baselines_data.sh
 ```
 
-当前检查结果是除 MP3D scenes 外，其余 R2R 数据、checkpoints、IVLN `tours.json` / `gt_ndtw.json` 都是 `ok`。下一步需要按 Matterport3D 官方授权流程补 MP3D 场景，补齐后再开始 VLN-CE / IVLN-CE benchmark smoke eval。
+当前检查结果是除 MP3D scenes 外，其余 R2R 数据、checkpoints、IVLN `tours.json` / `gt_ndtw.json` 都是 `ok`。一旦 MP3D 补齐，就可以直接开始 smoke eval:
+
+```bash
+EVAL_EPISODE_COUNT=10 ./scripts/run_vlnce_cma_smoke_eval.sh
+EVAL_EPISODE_COUNT=10 ./scripts/run_ivlnce_mapcma_smoke_eval.sh
+```
 
 ## 建议优先比较的模型
 
