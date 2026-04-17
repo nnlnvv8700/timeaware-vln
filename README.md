@@ -30,6 +30,30 @@
 - 如果你更想先低成本验证“多目标搜索 + 时间预算”而不是开放词汇语言目标
 - 但它是闭集类别目标，语言表达能力弱于 `GOAT-Bench`
 
+## 容器总览
+
+这个仓库当前不是“一个大容器跑所有任务”，而是按 benchmark 维护两套容器环境:
+
+- `GOAT-Bench`:
+  - image: `timeawarevln-goat:0.1`
+  - 入口脚本: `scripts/docker_run_goat.sh`
+  - 对应 `Habitat 0.2.3 / habitat-sim 0.2.3`
+- `VLN-CE / IVLN-CE`:
+  - image: `timeawarevln-vlnce:0.1`
+  - 入口脚本: `scripts/docker_run_vlnce.sh`
+  - 对应 `Habitat 0.1.7 / habitat-sim 0.1.7`
+
+为什么要分开:
+
+- `GOAT-Bench` 和经典 `VLN-CE / IVLN-CE` 绑定的是不同代际的 Habitat 生态
+- Python、PyTorch、Habitat API、任务配置都不完全兼容
+- 因此不要混用镜像，按任务进入对应容器
+
+快速对照:
+
+- 跑 `GOAT-Bench language-goal`: 用 `timeawarevln-goat:0.1`
+- 跑 `VLN-CE CMA` 或 `IVLN-CE MapCMA`: 用 `timeawarevln-vlnce:0.1`
+
 ## GOAT / TimeAwareVLN 容器环境
 
 当前本机已新建并跑通过 GOAT 实验容器:
@@ -143,6 +167,44 @@ TEST_EPISODE_COUNT=360 BUDGETS="100 200 300 500" ./scripts/run_goat_budget_sweep
 - `scripts/prefetch_vlnce_wheels.sh`
 - `scripts/download_file_segments.py`
 
+使用方式:
+
+- 进入 `VLN-CE / IVLN-CE` 容器:
+
+```bash
+./scripts/docker_run_vlnce.sh bash
+```
+
+- 在容器里验证 `VLN-CE` import:
+
+```bash
+./scripts/docker_run_vlnce.sh bash -lc 'cd /all_vln/vln/vln_external/VLN-CE && python -c "import vlnce_baselines; print(\"vlnce ok\")"'
+```
+
+- 在容器里验证 `IVLN-CE` import:
+
+```bash
+./scripts/docker_run_vlnce.sh bash -lc 'cd /all_vln/vln/vln_external/IVLN-CE && python -c "import ivlnce_baselines; import habitat_extensions; print(\"ivln ok\")"'
+```
+
+- 直接运行 `VLN-CE` smoke eval:
+
+```bash
+EVAL_EPISODE_COUNT=10 NUM_ENVIRONMENTS=1 ./scripts/run_vlnce_cma_smoke_eval.sh
+```
+
+- 直接运行 `IVLN-CE` smoke eval:
+
+```bash
+EVAL_EPISODE_COUNT=10 NUM_ENVIRONMENTS=1 ./scripts/run_ivlnce_mapcma_smoke_eval.sh
+```
+
+注意:
+
+- `scripts/docker_run_vlnce.sh` 已经自动透传宿主机 `DISPLAY` 和 `/tmp/.X11-unix`。
+- 这是为了兼容 `habitat-sim 0.1.7`。在当前机器上，旧版 `habitat-sim` 通过宿主机 X11 比纯 EGL headless 更稳定。
+- 因此跑 `VLN-CE / IVLN-CE` 时建议直接使用这个脚本，不要自己手写 `docker run`。
+
 GitHub 仓库不会直接追踪 `vln_external/`、数据集、checkpoint 或本地 wheel 缓存。外部仓库 URL、当前 commit 和本地 `goat-bench` patch 见:
 
 - `vln_external_repos.md`
@@ -199,27 +261,44 @@ VLNCE_WHEEL_SOURCE=official CONNECTIONS=8 ./scripts/prefetch_vlnce_wheels.sh
 - IVLN-CE 需要的 `tours.json` 和 `gt_ndtw.json` 已放好:
   - `vln_external/IVLN-CE/data/tours.json`
   - `vln_external/IVLN-CE/data/gt_ndtw.json`
+- IVLN-CE `pred_semantics` 需要的 RedNet checkpoint 已放好:
+  - `vln_external/IVLN-CE/data/rednet_mp3d_best_model.pkl`
 - IVLN MapCMA checkpoints 已放好，`pretrained_mapcma/` 下有 6 个 `.pth`:
   - `vln_external/IVLN-CE/data/checkpoints/pretrained_mapcma/`
 
-当前仍缺 MP3D scene data，因此 VLN-CE / IVLN-CE 还不能正式跑 benchmark:
+当前 MP3D 已补齐并挂到两个项目:
 
-- `vln_external/VLN-CE/data/scene_datasets/mp3d/`
-- `vln_external/IVLN-CE/data/scene_datasets/mp3d/`
+- 共享目录:
+  - `data/scene_datasets/mp3d/`
+- 项目内链接:
+  - `vln_external/VLN-CE/data/scene_datasets/mp3d`
+  - `vln_external/IVLN-CE/data/scene_datasets/mp3d`
 
-MP3D 的阻塞点不是仓库代码，而是 `Matterport3D` 官方授权:
+用下面命令检查 `VLN-CE / IVLN-CE` 数据是否补齐:
 
-- 需要先到 Matterport 官方页面按条款申请访问权限
-- 拿到官方 `download_mp.py` 后，用 `python2.7` 下载 `--task habitat`
-- 本仓库已经补了 `scripts/install_mp3d_scenes.sh`，可以把这一步变成统一缓存 + 双项目链接
+```bash
+./scripts/check_native_baselines_data.sh
+```
 
-如果你已经有现成的 MP3D 目录:
+当前这条检查已经通过，包含:
+
+- `MP3D scenes`
+- `R2R preprocessed dataset`
+- `VLN-CE CMA checkpoint`
+- `IVLN tours.json`
+- `IVLN gt_ndtw.json`
+- `IVLN RedNet checkpoint`
+- `IVLN MapCMA checkpoints`
+
+如果以后要在新机器上重新安装 MP3D:
+
+- 已有现成 MP3D 目录时:
 
 ```bash
 ./scripts/install_mp3d_scenes.sh --source /path/to/mp3d
 ```
 
-如果你拿到了官方 `download_mp.py`:
+- 已拿到官方 `download_mp.py` 时:
 
 ```bash
 ./scripts/install_mp3d_scenes.sh --download-script /path/to/download_mp.py
@@ -234,17 +313,21 @@ MP3D 的阻塞点不是仓库代码，而是 `Matterport3D` 官方授权:
 - `vln_external/VLN-CE/data/scene_datasets/mp3d`
 - `vln_external/IVLN-CE/data/scene_datasets/mp3d`
 
-用下面命令检查数据是否补齐:
+当前复现状态:
+
+- `VLN-CE CMA`:
+  - `10-episode smoke eval` 已跑通
+  - 结果目录: `vln_external/VLN-CE/data/checkpoints/pretrained/CMA_PM_DA_Aug_smoke_evals/`
+- `IVLN-CE MapCMA`:
+  - 容器、数据、RedNet、checkpoint 都已打通
+  - `pred_semantics + iterative_maps` smoke eval 可启动并进入正式 iterative rollout
+  - 脚本: `scripts/run_ivlnce_mapcma_smoke_eval.sh`
+
+最常用的两条命令:
 
 ```bash
-./scripts/check_native_baselines_data.sh
-```
-
-当前检查结果是除 MP3D scenes 外，其余 R2R 数据、checkpoints、IVLN `tours.json` / `gt_ndtw.json` 都是 `ok`。一旦 MP3D 补齐，就可以直接开始 smoke eval:
-
-```bash
-EVAL_EPISODE_COUNT=10 ./scripts/run_vlnce_cma_smoke_eval.sh
-EVAL_EPISODE_COUNT=10 ./scripts/run_ivlnce_mapcma_smoke_eval.sh
+EVAL_EPISODE_COUNT=10 NUM_ENVIRONMENTS=1 ./scripts/run_vlnce_cma_smoke_eval.sh
+EVAL_EPISODE_COUNT=10 NUM_ENVIRONMENTS=1 ./scripts/run_ivlnce_mapcma_smoke_eval.sh
 ```
 
 ## 建议优先比较的模型
