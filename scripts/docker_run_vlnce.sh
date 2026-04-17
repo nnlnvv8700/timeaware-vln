@@ -15,8 +15,16 @@ if [[ -t 0 && -t 1 ]]; then
   DOCKER_TTY_ARGS=(-it)
 fi
 
+DISPLAY_ARGS=()
+if [[ -n "${DISPLAY:-}" && -d /tmp/.X11-unix ]]; then
+  # Habitat-Sim 0.1.7 is more reliable with the host X11 display than EGL-only headless mode.
+  DISPLAY_ARGS+=(-e "DISPLAY=${DISPLAY}")
+  DISPLAY_ARGS+=(-v /tmp/.X11-unix:/tmp/.X11-unix)
+fi
+
 docker run --rm \
   "${DOCKER_TTY_ARGS[@]}" \
+  "${DISPLAY_ARGS[@]}" \
   --gpus 'all,"capabilities=compute,utility,graphics,display"' \
   --ipc=host \
   --network=host \

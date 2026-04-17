@@ -61,6 +61,7 @@ check_file "R2R val_unseen episodes" "${IVLNCE}/data/datasets/R2R_VLNCE_v1-3_pre
 check_file "Tour ordering" "${IVLNCE}/data/tours.json"
 check_file "t-nDTW target paths" "${IVLNCE}/data/gt_ndtw.json"
 check_file "DD-PPO depth encoder" "${IVLNCE}/data/ddppo-models/gibson-2plus-resnet50.pth"
+check_file "RedNet semantics checkpoint" "${IVLNCE}/data/rednet_mp3d_best_model.pkl"
 
 mapcma_count=0
 if [[ -d "${IVLNCE}/data/checkpoints/pretrained_mapcma" ]]; then
